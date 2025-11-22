@@ -46,4 +46,5 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
             this.imageView = (ImageView) itemView;
         }
     }
+
 }
