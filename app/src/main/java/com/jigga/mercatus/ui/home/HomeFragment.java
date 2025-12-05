@@ -86,10 +86,10 @@ public class HomeFragment extends Fragment {
 
     private void setupSlider(ViewPager2 viewPager) {
         List<Integer> sliderImages = new ArrayList<>();
-        // Use standard Android drawables for demo, replace with R.drawable.your_image
-        sliderImages.add(android.R.drawable.ic_menu_gallery);
-        sliderImages.add(android.R.drawable.ic_menu_camera);
-        sliderImages.add(android.R.drawable.ic_menu_compass);
+        // Slides for demo purposes
+        sliderImages.add(R.drawable.slide1);
+        sliderImages.add(R.drawable.slide2);
+        sliderImages.add(R.drawable.slide3);
 
         SliderAdapter sliderAdapter = new SliderAdapter(sliderImages);
         viewPager.setAdapter(sliderAdapter);
