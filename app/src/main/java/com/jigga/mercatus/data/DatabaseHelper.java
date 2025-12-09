@@ -39,6 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // add product helper function
     public void addProduct(Product product) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -49,6 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    // get products by category helper function
     public List<Product> getProductsByCategory(String category) {
         List<Product> products = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -72,6 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    // list all products helper function
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

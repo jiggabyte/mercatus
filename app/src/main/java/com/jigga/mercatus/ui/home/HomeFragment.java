@@ -78,6 +78,7 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    // loads add product dialog
     private void openAddProductDialog(HomeViewModel homeViewModel) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Add New Product");
@@ -117,6 +118,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    // home screen slider
     private void setupSlider(ViewPager2 viewPager) {
         List<Integer> sliderImages = new ArrayList<>();
         sliderImages.add(R.drawable.slide1);
@@ -138,6 +140,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    // products filter method
     private void filterProductsByCategory(String category) {
         displayList.clear();
         displayedProductObjects.clear();
@@ -151,6 +154,7 @@ public class HomeFragment extends Fragment {
         listAdapter.notifyDataSetChanged();
     }
 
+    // display product details
     private void showProductDetailsDialog(Product product) {
         new AlertDialog.Builder(requireContext())
                 .setTitle(product.getName())

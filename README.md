@@ -8,7 +8,7 @@ Git clone the repo into your local machine, ensuring you have java 17 installed 
 import the app into your android studio.
 Click on the build play button the build will run for some minutes and then install the app on an android connected externally or the emulator in the android studio from whence the app can be used.
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/v-XmB1hL5tA)
 
 # Development Environment
 

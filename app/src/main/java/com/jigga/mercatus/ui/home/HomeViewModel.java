@@ -21,6 +21,7 @@ public class HomeViewModel extends AndroidViewModel {
         loadProducts();
     }
 
+    // load products from database
     private void loadProducts() {
         List<Product> data = dbHelper.getAllProducts();
         products.setValue(data);
@@ -35,6 +36,7 @@ public class HomeViewModel extends AndroidViewModel {
         return products;
     }
 
+    // add product to database
     public void addProduct(Product product) {
         dbHelper.addProduct(product);
         loadProducts();
