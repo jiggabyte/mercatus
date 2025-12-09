@@ -11,10 +11,8 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
-
+    private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "mercatus.db";
-    // private static final int DATABASE_VERSION = 1;
     private static final String TABLE_PRODUCTS = "products";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
@@ -72,7 +70,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return products;
 
-
     }
 
     public List<Product> getAllProducts() {
@@ -95,4 +92,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return products;
     }
+
 }
