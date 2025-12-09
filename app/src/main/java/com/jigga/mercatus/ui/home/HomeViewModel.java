@@ -9,7 +9,6 @@ import com.jigga.mercatus.data.DatabaseHelper;
 import com.jigga.mercatus.model.Product;
 import java.util.List;
 
-// Changed to AndroidViewModel to access Context/Application
 public class HomeViewModel extends AndroidViewModel {
 
     private final MutableLiveData<List<Product>> products;
@@ -23,12 +22,21 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     private void loadProducts() {
-        // In a real app, do this on a background thread
         List<Product> data = dbHelper.getAllProducts();
+        products.setValue(data);
+    }
+
+    private void loadProductsByCategory(String category) {
+        List<Product> data = dbHelper.getProductsByCategory(category);
         products.setValue(data);
     }
 
     public LiveData<List<Product>> getProducts() {
         return products;
+    }
+
+    public void addProduct(Product product) {
+        dbHelper.addProduct(product);
+        loadProducts();
     }
 }

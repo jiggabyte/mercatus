@@ -2,6 +2,7 @@ package com.jigga.mercatus.ui.home;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,7 +26,6 @@ import com.jigga.mercatus.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment {
 
@@ -33,7 +33,6 @@ public class HomeFragment extends Fragment {
     private static final String PREFS_NAME = "MercatusPrefs";
     private static final String KEY_USERNAME = "username";
 
-    // Data holders
     private List<Product> allProducts = new ArrayList<>();
     private ArrayAdapter<String> listAdapter;
     private List<String> displayList = new ArrayList<>();
@@ -51,14 +50,11 @@ public class HomeFragment extends Fragment {
         final ListView listView = binding.listViewProducts;
         final ViewPager2 sliderViewPager = binding.sliderViewPager;
         final LinearLayout categoryContainer = binding.categoryContainer;
+        final Button addProductBtn = binding.btnAddProduct;
 
-        // 1. Shared Preferences Logic
         setupWelcomeMessage(textView);
-
-        // 2. Setup Slider
         setupSlider(sliderViewPager);
 
-        // 3. SQLite & List Logic
         listAdapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_list_item_1,
@@ -66,31 +62,66 @@ public class HomeFragment extends Fragment {
         );
         listView.setAdapter(listAdapter);
 
-        // 4. Observe Data
         homeViewModel.getProducts().observe(getViewLifecycleOwner(), products -> {
             allProducts = products;
-            // Initially show all
             filterProductsByCategory("All");
-            // Setup category buttons dynamically based on data (or hardcoded)
             setupCategories(categoryContainer);
         });
 
-        // 5. Handle Product Clicks
         listView.setOnItemClickListener((parent, view, position, id) -> {
             Product clickedProduct = displayedProductObjects.get(position);
             showProductDetailsDialog(clickedProduct);
         });
 
+        addProductBtn.setOnClickListener(v -> openAddProductDialog(homeViewModel));
+
         return root;
+    }
+
+    private void openAddProductDialog(HomeViewModel homeViewModel) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Add New Product");
+
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_product, null);
+        builder.setView(dialogView);
+
+        builder.setPositiveButton("Add", (dialog, which) -> {
+            // Handle product addition
+            addProductFromDialog(dialogView, homeViewModel);
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+
+    private void addProductFromDialog(View dialogView, HomeViewModel homeViewModel) {
+        android.widget.EditText nameInput = dialogView.findViewById(R.id.edit_product_name);
+        android.widget.EditText priceInput = dialogView.findViewById(R.id.edit_product_price);
+        android.widget.Spinner categorySpinner = dialogView.findViewById(R.id.spinner_category);
+
+        String name = nameInput.getText().toString().trim();
+        String priceStr = priceInput.getText().toString().trim();
+        String category = categorySpinner.getSelectedItem().toString();
+
+        if (name.isEmpty() || priceStr.isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            double price = Double.parseDouble(priceStr);
+            Product newProduct = new Product(name, price, category);
+            homeViewModel.addProduct(newProduct);
+            Toast.makeText(requireContext(), "Product added successfully", Toast.LENGTH_SHORT).show();
+        } catch (NumberFormatException e) {
+            Toast.makeText(requireContext(), "Invalid price", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setupSlider(ViewPager2 viewPager) {
         List<Integer> sliderImages = new ArrayList<>();
-        // Slides for demo purposes
         sliderImages.add(R.drawable.slide1);
         sliderImages.add(R.drawable.slide2);
         sliderImages.add(R.drawable.slide3);
-
         SliderAdapter sliderAdapter = new SliderAdapter(sliderImages);
         viewPager.setAdapter(sliderAdapter);
     }
@@ -112,10 +143,7 @@ public class HomeFragment extends Fragment {
         displayedProductObjects.clear();
 
         for (Product p : allProducts) {
-            // Logic: If category is "All", add everything.
-            // If specific, check if product name/desc contains the category text (Simple filter)
-            // In a real app, your Product model should have a 'getCategory()' method.
-            if (category.equals("All") || p.getName().contains(category)) {
+            if (category.equals("All") || p.getCategory().equals(category)) {
                 displayList.add(p.getName() + " - $" + p.getPrice());
                 displayedProductObjects.add(p);
             }

@@ -32,9 +32,7 @@
             android:id="@+id/categoryContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <!-- Category buttons will be added programmatically -->
-        </LinearLayout>
+            android:orientation="horizontal" />
     </HorizontalScrollView>
 
     <TextView
@@ -48,6 +46,15 @@
     <ListView
         android:id="@+id/listViewProducts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Add Product Button -->
+    <Button
+        android:id="@+id/btn_add_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_product"
+        android:layout_margin="16dp" />
 
 </LinearLayout>
